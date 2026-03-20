@@ -1,113 +1,147 @@
+صار وتدلل يا بطل، شلتلك الجزء الخاص بالموسيقى والأيقونة مالتها، وحافظتلك على فخامة التصميم والـ Particles (النقاط المتطايرة) اللي تنطي لمسة برمجية راقية.
+
+تفضل الكود الصافي والمعدل:
+
+HTML
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To My Favorite Developer</title>
+    <title>إهداء خاص</title>
     <style>
-        :root {
-            --primary-pink: #ff75a0;
-            --soft-purple: #845ef7;
-            --glass-bg: rgba(255, 255, 255, 0.2);
-        }
-
+        /* خلفية متدرجة فخمة ومتحركة */
         body {
             margin: 0;
+            padding: 0;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #0f0c29; /* خلفية ليلية تبرز الألوان */
-            background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+            background: linear-gradient(45deg, #1a0021, #c9184a, #000000);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
         }
 
-        /* حاوية التصميم - Glassmorphism */
-        .container {
-            position: relative;
-            padding: 3rem;
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* كرت التصميم الزجاجي */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            padding: 70px 50px;
             text-align: center;
-            cursor: pointer;
-            transition: transform 0.3s ease;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+            position: relative;
+            z-index: 10;
+            transition: transform 0.4s ease;
         }
 
-        .container:hover {
-            transform: scale(1.02);
+        .glass-card:hover {
+            transform: translateY(-10px);
         }
 
-        /* الجملة المزخرفة بتأثير الشادو المتوهج */
-        h1 {
-            font-size: 2.5rem;
-            color: #fff;
-            margin: 0;
-            text-shadow: 0 0 10px var(--primary-pink), 0 0 20px var(--soft-purple);
-            letter-spacing: 1px;
+        /* النص الأساسي مع التنوين والزخرفة */
+        .main-text {
+            font-size: 3.2rem;
+            color: #ffffff;
+            font-weight: 900;
+            text-shadow: 0 0 20px rgba(255, 71, 126, 0.7);
+            line-height: 1.8;
         }
 
-        /* إضافة لمسة برمجية بسيطة */
-        .code-text {
-            color: #00ffcc;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 1rem;
-            margin-top: 15px;
-            display: block;
+        /* تمييز كلمة عامٍ */
+        .highlight {
+            color: #ffb3c1;
+            text-decoration: underline wavy #ff4d6d;
+            text-underline-offset: 10px;
         }
 
-        /* حركة القلوب البرمجية */
-        .particle {
+        /* تأثير النجوم/الجزيئات في الخلفية */
+        canvas {
             position: absolute;
-            pointer-events: none;
-            animation: fall linear infinite;
+            top: 0;
+            left: 0;
+            z-index: 1;
         }
-
-        @keyframes fall {
-            to { transform: translateY(100vh) rotate(360deg); }
-        }
-
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>كُـلّ عَـام وأنتِ الخَـيـر لِكُـلّ عَـام 🌸</h1>
-        
+    <canvas id="canvas"></canvas>
+
+    <div class="glass-card">
+        <div class="main-text">
+            كُـلّ <span class="highlight">عَـامٍ</span> <br>
+            وأنتِ الخَـيـر لِكُـلّ <span class="highlight">عَـامٍ</span> 🌸
+        </div>
     </div>
 
     <script>
-        function createParticle() {
-            const particle = document.createElement('div');
-            particle.classList.add('particle');
-            
-            // تنويع بين القلوب ورموز برمجية بسيطة
-            const types = ['❤', '✨', '{ }', 'CSS', 'JS'];
-            particle.innerText = types[Math.floor(Math.random() * types.length)];
-            
-            particle.style.left = Math.random() * 100 + "vw";
-            particle.style.top = "-5vh";
-            particle.style.color = ["#ff75a0", "#845ef7", "#00ffcc"][Math.floor(Math.random() * 3)];
-            particle.style.fontSize = Math.random() * 20 + 10 + "px";
-            particle.style.duration = Math.random() * 3 + 2 + "s";
-            particle.style.opacity = Math.random();
-            
-            document.body.appendChild(particle);
+        // كود الجزيئات البرمجية المتساقطة بنعومة
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-            particle.animate([
-                { transform: `translateY(0) rotate(0deg)`, opacity: 1 },
-                { transform: `translateY(110vh) rotate(720deg)`, opacity: 0 }
-            ], {
-                duration: Math.random() * 3000 + 3000,
-                easing: 'linear'
-            }).onfinish = () => particle.remove();
+        let particlesArray = [];
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+                this.opacity = Math.random();
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
+                if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
 
-        setInterval(createParticle, 200);
+        function init() {
+            particlesArray = [];
+            for (let i = 0; i < 150; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particlesArray.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            init();
+        });
+
+        init();
+        animate();
     </script>
 </body>
+</html>
 </html>
